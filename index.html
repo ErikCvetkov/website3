@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    website2 (no DY)
+    <a href="https://dy-website1.netlify.app/">website 1</a>
+    <button id="button">run script</button>
+</body>
+<script>
+    const button = document.querySelector("button");
+
+    button.addEventListener("click", () => {
+        setDYCookies();
+        loadDYScripts();
+
+        function loadDYScripts() {
+            const tags = [
+                {
+                    type: "link",
+                    attributes: [
+                        {
+                            name: "rel",
+                            value: "preconnect",
+                        },
+                        {
+                            name: "href",
+                            value: "//cdn.dynamicyield.com",
+                        },
+                    ],
+                },
+                {
+                    type: "link",
+                    attributes: [
+                        {
+                            name: "rel",
+                            value: "preconnect",
+                        },
+                        {
+                            name: "href",
+                            value: "//st.dynamicyield.com",
+                        },
+                    ],
+                },
+                {
+                    type: "link",
+                    attributes: [
+                        {
+                            name: "rel",
+                            value: "preconnect",
+                        },
+                        {
+                            name: "href",
+                            value: "//rcom.dynamicyield.com",
+                        },
+                    ],
+                },
+                {
+                    type: "link",
+                    attributes: [
+                        {
+                            name: "rel",
+                            value: "dns-prefetch",
+                        },
+                        {
+                            name: "href",
+                            value: "//cdn.dynamicyield.com",
+                        },
+                    ],
+                },
+                {
+                    type: "link",
+                    attributes: [
+                        {
+                            name: "rel",
+                            value: "dns-prefetch",
+                        },
+                        {
+                            name: "href",
+                            value: "//st.dynamicyield.com",
+                        },
+                    ],
+                },
+                {
+                    type: "link",
+                    attributes: [
+                        {
+                            name: "rel",
+                            value: "dns-prefetch",
+                        },
+                        {
+                            name: "href",
+                            value: "//rcom.dynamicyield.com",
+                        },
+                    ],
+                },
+                {
+                    type: "script",
+                    attributes: [
+                        {
+                            name: "type",
+                            value: "text/javascript",
+                        },
+                    ],
+                    inner:
+                        'window.DY = window.DY || {}; DY.recommendationContext = { type: "HOMEPAGE" };',
+                },
+                {
+                    type: "script",
+                    attributes: [
+                        {
+                            name: "type",
+                            value: "text/javascript",
+                        },
+                        {
+                            name: "src",
+                            value: "//cdn.dynamicyield.com/api/8787526/api_dynamic.js",
+                        },
+                    ],
+                },
+                {
+                    type: "script",
+                    attributes: [
+                        {
+                            name: "type",
+                            value: "text/javascript",
+                        },
+                        {
+                            name: "src",
+                            value: "//cdn.dynamicyield.com/api/8787526/api_static.js",
+                        },
+                    ],
+                },
+            ];
+
+            tags.forEach((tag) => {
+                const element = document.createElement(tag.type);
+                tag.attributes.forEach((attribute) => {
+                    element.setAttribute(attribute.name, attribute.value);
+                });
+                element.innerHTML = tag.inner ? tag.inner : "";
+                document.head.appendChild(element);
+            });
+        }
+
+        function setDYCookies() {
+            const paramNames = ["dyid", "jsession"];
+            const paramValues = getURLParams(paramNames);
+
+            const date = new Date();
+            const expirationDate = date.setMonth(date.getMonth() + 12);
+            document.cookie = `_dyid=${paramValues[0].value};`;
+            document.cookie = `_dyjsession=${paramValues[1].value};`;
+        }
+        function getURLParams(paramNames) {
+            const url = window.location.href;
+            const searchParams = new URLSearchParams(new URL(url).search);
+            const params = {};
+            const paramsArray = [];
+            searchParams.forEach((value, key) => {
+                const paramObject = { name: key, value: value };
+                paramsArray.push(paramObject);
+            });
+            if (paramNames && paramNames.length > 0) {
+                return paramsArray.filter((paramObject) =>
+                    paramNames.includes(paramObject.name)
+                );
+            }
+
+            return paramsArray;
+        }
+    });
+</script>
+
+</html>
